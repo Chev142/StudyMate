@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyMate</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #2d2d2d;
+            border-right: 1px solid #404040;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #404040;
+        }
+
+        .sidebar-header h1 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .sidebar-nav {
+            padding: 20px;
+            flex: 1;
+        }
+
+        .sidebar-nav h3 {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover {
+            background-color: #404040;
+        }
+
+        .nav-item.active {
+            background-color: #404040;
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 16px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid #404040;
+            background-color: #2d2d2d;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .app-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            color: white;
+        }
+
+        .settings-btn {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .settings-btn:hover {
+            background-color: #404040;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .welcome-section h1 {
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .welcome-section p {
+            font-size: 16px;
+            color: #888;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .tools-section h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+        }
+
+        .tool-card {
+            background-color: #2d2d2d;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 32px 24px;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            border-color: #555;
+        }
+
+        .tool-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+
+        .flashcards-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .timer-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .quiz-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .notes-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .tool-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .tool-card p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .tool-btn {
+            background-color: #404040;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .tool-btn:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>StudyMate</h1>
+            </div>
+
+            <nav class="sidebar-nav">
+                <h3>Study Tools</h3>
+                <ul>
+                    <li class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        Dashboard
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-icon">📚</span>
+                        Flashcards
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-icon">⏰</span>
+                        Pomodoro Timer
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        Quiz Maker
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-icon">📝</span>
+                        Notes
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="app-icon">SM</div>
+                    <span>StudyMate</span>
+                </div>
+                <div class="header-right">
+                    <button class="settings-btn">⚙️</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard">
+                <div class="welcome-section">
+                    <h1>Welcome to StudyMate</h1>
+                    <p>Your all-in-one study companion. Choose from powerful tools designed to enhance your learning
+                        experience.</p>
+                </div>
+
+                <div class="tools-section">
+                    <h2>Study Tools</h2>
+                    <div class="tools-grid">
+                        <div class="tool-card">
+                            <div class="tool-icon flashcards-icon">📚</div>
+                            <h3>Flashcards</h3>
+                            <p>Create and study flashcards for effective memorization.</p>
+                            <button class="tool-btn">Open</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-icon timer-icon">⏰</div>
+                            <h3>Pomodoro Timer</h3>
+                            <p>Focus with timed study sessions and breaks.</p>
+                            <button class="tool-btn">Open</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-icon quiz-icon">❓</div>
+                            <h3>Quiz Maker</h3>
+                            <p>Test your knowledge with custom quizzes.</p>
+                            <button class="tool-btn">Open</button>
+                        </div>
+
+                        <div class="tool-card">
+                            <div class="tool-icon notes-icon">📝</div>
+                            <h3>Notes</h3>
+                            <p>Organize your study materials and thoughts.</p>
+                            <button class="tool-btn">Open</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
+<style>
+    /* Additional styles for interactive components */
+    .tool-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #404040;
+    }
+
+    .tool-header h1 {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary {
+        background-color: #404040;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+        background-color: #555;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    /* Modal Styles */
+    .modal {
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: #2d2d2d;
+        padding: 32px;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+        position: relative;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        font-size: 24px;
+        color: #888;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+        color: #fff;
+    }
+
+    .modal-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        justify-content: flex-end;
+    }
+
+    /* Form Elements */
+    .input-field {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #404040;
+        border-radius: 6px;
+        background-color: #1a1a1a;
+        color: white;
+        font-size: 14px;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .textarea-field {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #404040;
+        border-radius: 6px;
+        background-color: #1a1a1a;
+        color: white;
+        font-size: 14px;
+        min-height: 120px;
+        resize: vertical;
+        font-family: inherit;
+    }
+
+    .textarea-field:focus {
+        outline: none;
+        border-color: #667eea;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #ccc;
+    }
+
+    /* Flashcards Styles */
+    .flashcard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 40px;
+    }
+
+    .flashcard {
+        width: 400px;
+        height: 250px;
+        perspective: 1000px;
+        margin-bottom: 24px;
+    }
+
+    .flashcard-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    .flashcard-inner.flipped {
+        transform: rotateY(180deg);
+    }
+
+    .flashcard-front,
+    .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #2d2d2d;
+    }
+
+    .flashcard-front {
+        color: white;
+    }
+
+    .flashcard-back {
+        color: white;
+        transform: rotateY(180deg);
+    }
+
+    .flashcard-controls {
+        display: flex;
+        gap: 12px;
+    }
+
+    .flashcard-list {
+        margin-top: 40px;
+        width: 100%;
+    }
+
+    .flashcard-list h3 {
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .flashcard-item {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Subject-related styles */
+    .subject-filter {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .subject-tag {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .subject-tag:hover {
+        transform: translateY(-2px);
+    }
+
+    .subject-tag.active {
+        box-shadow: 0 0 0 2px white;
+    }
+
+    .subject-tag-small {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        display: inline-block;
+        margin-right: 8px;
+        color: white;
+    }
+
+    .color-picker {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .color-option {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+
+    .color-option:hover {
+        transform: scale(1.1);
+    }
+
+    .color-option.selected {
+        box-shadow: 0 0 0 2px white, 0 0 0 4px #404040;
+    }
+
+    .btn-small {
+        background-color: #404040;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+        margin-left: 8px;
+    }
+
+    .btn-small:hover {
+        background-color: #555;
+    }
+
+    /* Pomodoro Timer Styles */
+    .pomodoro-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .timer-display {
+        margin-bottom: 40px;
+    }
+
+    .timer-circle {
+        width: 200px;
+        height: 200px;
+        border: 4px solid #404040;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #2d2d2d;
+    }
+
+    #timer-text {
+        font-size: 36px;
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .timer-controls {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+
+    .timer-settings {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    .setting-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .setting-group label {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .setting-group input {
+        width: 80px;
+        padding: 8px 12px;
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 4px;
+        color: white;
+        text-align: center;
+    }
+
+    /* Quiz Styles */
+    .quiz-container {
+        max-width: 800px;
+    }
+
+    .quiz-creator {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 32px;
+    }
+
+    .question-item {
+        background-color: #1a1a1a;
+        border: 1px solid #404040;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+        position: relative;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .quiz-item {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+
+    .quiz-item h4 {
+        margin-bottom: 8px;
+        font-size: 18px;
+    }
+
+    .quiz-item p {
+        color: #888;
+        margin-bottom: 8px;
+    }
+
+    .quiz-item small {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .quiz-item button {
+        margin-right: 8px;
+        margin-top: 12px;
+    }
+
+    /* Notes Styles */
+    .notes-container {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 32px;
+        height: calc(100vh - 200px);
+    }
+
+    .notes-sidebar {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 12px;
+        padding: 20px;
+        overflow-y: auto;
+    }
+
+    .notes-sidebar h3 {
+        margin-bottom: 20px;
+        font-size: 18px;
+    }
+
+    .note-item {
+        background-color: #1a1a1a;
+        border: 1px solid #404040;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .note-item:hover {
+        background-color: #333;
+    }
+
+    .note-item h4 {
+        margin-bottom: 8px;
+        font-size: 16px;
+    }
+
+    .note-item small {
+        color: #888;
+        font-size: 12px;
+    }
+
+    .notes-editor {
+        background-color: #2d2d2d;
+        border: 1px solid #404040;
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notes-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        color: #888;
+        font-style: italic;
+        padding: 40px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .app {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+        }
+
+        .sidebar-nav {
+            padding: 10px;
+        }
+
+        .sidebar-nav ul {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .welcome-section h1 {
+            font-size: 28px;
+        }
+
+        .tools-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .flashcard {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .timer-circle {
+            width: 150px;
+            height: 150px;
+        }
+
+        #timer-text {
+            font-size: 28px;
+        }
+
+        .timer-settings {
+            justify-content: center;
+        }
+
+        .notes-container {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .notes-sidebar {
+            max-height: 200px;
+        }
+
+        .modal-content {
+            padding: 24px;
+            width: 95%;
+        }
+
+        .modal-actions {
+            flex-direction: column;
+        }
+
+        .modal-actions button {
+            width: 100%;
+        }
+    }
+</style>
+<script>
+    // StudyMate Application JavaScript
+    const studyMate = {
+        currentView: 'dashboard',
+        currentFlashcardIndex: 0,
+        currentNoteId: null,
+        currentSubjectFilter: null,
+        timerInterval: null,
+        timeLeft: 25 * 60,
+        isRunning: false,
+
+        // Initialize the application
+        init: function () {
+            console.log("StudyMate initializing...");
+            this.setupEventListeners();
+
+            // Initialize sample data if first time
+            if (!localStorage.getItem('studymate-initialized')) {
+                this.initializeSampleData();
+            }
+        },
+
+        // Set up event listeners
+        setupEventListeners: function () {
+            // Navigation sidebar items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const navItem = e.currentTarget;
+                    const toolName = navItem.textContent.trim().toLowerCase();
+
+                    // Update active state
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    navItem.classList.add('active');
+
+                    // Navigate to appropriate view
+                    if (toolName.includes('dashboard')) {
+                        this.loadDashboard();
+                    } else if (toolName.includes('flashcard')) {
+                        this.loadFlashcards();
+                    } else if (toolName.includes('pomodoro')) {
+                        this.loadPomodoroTimer();
+                    } else if (toolName.includes('quiz')) {
+                        this.loadQuizMaker();
+                    } else if (toolName.includes('note')) {
+                        this.loadNotes();
+                    }
+                });
+            });
+
+            // Settings button
+            const settingsBtn = document.querySelector('.settings-btn');
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', () => this.showSettings());
+            }
+
+            // Tool cards in dashboard
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const toolCard = e.target.closest('.tool-card');
+                    const toolName = toolCard.querySelector('h3').textContent.toLowerCase();
+
+                    if (toolName.includes('flashcard')) {
+                        this.loadFlashcards();
+                    } else if (toolName.includes('pomodoro')) {
+                        this.loadPomodoroTimer();
+                    } else if (toolName.includes('quiz')) {
+                        this.loadQuizMaker();
+                    } else if (toolName.includes('note')) {
+                        this.loadNotes();
+                    }
+                });
+            });
+        },
+
+        // Initialize sample data for first-time users
+        initializeSampleData: function () {
+            // Sample subjects
+            const subjects = [
+                { id: 1, name: "Computer Science", color: "#4285F4" },
+                { id: 2, name: "Mathematics", color: "#EA4335" },
+                { id: 3, name: "Biology", color: "#34A853" },
+                { id: 4, name: "History", color: "#FBBC05" }
+            ];
+            localStorage.setItem('studymate-subjects', JSON.stringify(subjects));
+
+            // Sample flashcards
+            localStorage.setItem('studymate-flashcards', JSON.stringify([
+                { id: 1, front: "What is JavaScript?", back: "A programming language for web development", subjectId: 1 },
+                { id: 2, front: "What does HTML stand for?", back: "HyperText Markup Language", subjectId: 1 },
+                { id: 3, front: "What is the Pythagorean theorem?", back: "a² + b² = c²", subjectId: 2 },
+                { id: 4, front: "What is photosynthesis?", back: "The process by which plants convert light energy into chemical energy", subjectId: 3 }
+            ]));
+
+            // Sample notes
+            localStorage.setItem('studymate-notes', JSON.stringify([
+                {
+                    id: 1,
+                    title: "Study Tips",
+                    content: "1. Take regular breaks\n2. Stay organized\n3. Practice active recall",
+                    date: new Date().toLocaleDateString(),
+                    subjectId: null
+                }
+            ]));
+
+            // Sample quizzes
+            localStorage.setItem('studymate-quizzes', JSON.stringify([
+                {
+                    id: 1,
+                    title: "Web Development Basics",
+                    questions: [
+                        { question: "What language is used for styling web pages?", answer: "CSS" },
+                        { question: "What does API stand for?", answer: "Application Programming Interface" }
+                    ],
+                    date: new Date().toLocaleDateString(),
+                    subjectId: 1
+                },
+                {
+                    id: 2,
+                    title: "Basic Math Concepts",
+                    questions: [
+                        { question: "What is 7 × 8?", answer: "56" },
+                        { question: "What is the formula for the area of a circle?", answer: "πr²" }
+                    ],
+                    date: new Date().toLocaleDateString(),
+                    subjectId: 2
+                }
+            ]));
+
+            // Default settings
+            localStorage.setItem('studymate-settings', JSON.stringify({
+                pomodoroWorkTime: 25,
+                pomodoroBreakTime: 5
+            }));
+
+            localStorage.setItem('studymate-initialized', 'true');
+        },
+
+        // DASHBOARD VIEW
+        loadDashboard: function () {
+            this.currentView = 'dashboard';
+            const dashboard = document.querySelector('.dashboard');
+            dashboard.innerHTML = `
+                    <div class="welcome-section">
+                        <h1>Welcome to StudyMate</h1>
+                        <p>Your all-in-one study companion. Choose from powerful tools designed to enhance your learning experience.</p>
+                    </div>
+
+                    <div class="tools-section">
+                        <h2>Study Tools</h2>
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <div class="tool-icon flashcards-icon">📚</div>
+                                <h3>Flashcards</h3>
+                                <p>Create and study flashcards for effective memorization.</p>
+                                <button class="tool-btn" onclick="studyMate.loadFlashcards()">Open</button>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon timer-icon">⏰</div>
+                                <h3>Pomodoro Timer</h3>
+                                <p>Focus with timed study sessions and breaks.</p>
+                                <button class="tool-btn" onclick="studyMate.loadPomodoroTimer()">Open</button>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon quiz-icon">❓</div>
+                                <h3>Quiz Maker</h3>
+                                <p>Test your knowledge with custom quizzes.</p>
+                                <button class="tool-btn" onclick="studyMate.loadQuizMaker()">Open</button>
+                            </div>
+
+                            <div class="tool-card">
+                                <div class="tool-icon notes-icon">📝</div>
+                                <h3>Notes</h3>
+                                <p>Organize your study materials and thoughts.</p>
+                                <button class="tool-btn" onclick="studyMate.loadNotes()">Open</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        },
+
+        // FLASHCARDS VIEW
+        loadFlashcards: function () {
+            this.currentView = 'flashcards';
+            this.currentSubjectFilter = null; // Reset subject filter
+
+            // Get subjects for filter
+            const subjects = this.getSubjects();
+            const subjectFilters = subjects.map(subject =>
+                `<div class="subject-tag" data-id="${subject.id}" style="background-color: ${subject.color};" onclick="studyMate.filterFlashcardsBySubject(${subject.id})">
+                        ${subject.name}
+                    </div>`
+            ).join('');
+
+            const dashboard = document.querySelector('.dashboard');
+            dashboard.innerHTML = `
+                    <div class="tool-header">
+                        <h1>📚 Flashcards</h1>
+                        <div>
+                            <button class="btn-secondary" onclick="studyMate.createSubject()">New Subject</button>
+                            <button class="btn-primary" onclick="studyMate.createFlashcard()">Create New Flashcard</button>
+                        </div>
+                    </div>
+                    
+                    <div class="subject-filter">
+                        <div class="subject-tag active" data-id="all" onclick="studyMate.filterFlashcardsBySubject(null)" style="background-color: #555;">
+                            All Subjects
+                        </div>
+                        ${subjectFilters}
+                    </div>
+                    
+                    <div class="flashcard-container">
+                        <div class="flashcard" id="current-flashcard">
+                            <div class="flashcard-inner">
+                                <div class="flashcard-front">
+                                    <h3>Click "Create New Flashcard" to get started!</h3>
+                                </div>
+                                <div class="flashcard-back">
+                                    <p>Your answer will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flashcard-controls">
+                            <button class="btn-secondary" onclick="studyMate.flipCard()">Flip Card</button>
+                            <button class="btn-secondary" onclick="studyMate.prevCard()">Previous</button>
+                            <button class="btn-secondary" onclick="studyMate.nextCard()">Next</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flashcard-list">
+                        <h3>Your Flashcards</h3>
+                        <div id="flashcard-items"></div>
+                    </div>
+                `;
+
+            this.loadFlashcardData();
+            this.showCurrentFlashcard();
+        },
+
+        filterFlashcardsBySubject: function (subjectId) {
+            this.currentSubjectFilter = subjectId;
+
+            // Update active state in filter
+            document.querySelectorAll('.subject-tag').forEach(tag => {
+                tag.classList.remove('active');
+            });
+
+            if (subjectId === null) {
+                document.querySelector('.subject-tag[data-id="all"]').classList.add('active');
+            } else {
+                document.querySelector(`.subject-tag[data-id="${subjectId}"]`).classList.add('active');
+            }
+
+            this.loadFlashcardData();
+            this.currentFlashcardIndex = 0;
+            this.showCurrentFlashcard();
+        },
+
+        createFlashcard: function () {
+            // Get subjects for dropdown
+            const subjects = this.getSubjects();
+            const subjectOptions = subjects.map(subject =>
+                `<option value="${subject.id}">${subject.name}</option>`
+            ).join('');
+
+            // Create flashcard modal if it doesn't exist
+            if (!document.getElementById('flashcard-modal')) {
+                const modalHTML = `
+                        <div id="flashcard-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close-modal" onclick="studyMate.closeModal('flashcard-modal')">&times;</span>
+                                <h2>Create New Flashcard</h2>
+                                
+                                <div class="form-group">
+                                    <label for="flashcard-subject">Subject:</label>
+                                    <select id="flashcard-subject" class="input-field">
+                                        <option value="">-- Select Subject --</option>
+                                        ${subjectOptions}
+                                    </select>
+                                    <button class="btn-small" onclick="studyMate.createSubject()">+ New Subject</button>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="flashcard-front">Front (Question):</label>
+                                    <textarea id="flashcard-front" class="textarea-field" rows="4" placeholder="Enter the question or term"></textarea>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="flashcard-back">Back (Answer):</label>
+                                    <textarea id="flashcard-back" class="textarea-field" rows="4" placeholder="Enter the answer or definition"></textarea>
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button class="btn-primary" onclick="studyMate.saveFlashcard()">Save Flashcard</button>
+                                    <button class="btn-secondary" onclick="studyMate.closeModal('flashcard-modal')">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            } else {
+                // Update subject dropdown with latest subjects
+                const subjectSelect = document.getElementById('flashcard-subject');
+                subjectSelect.innerHTML = `<option value="">-- Select Subject --</option>${subjectOptions}`;
+            }
+
+            // Clear previous values
+            document.getElementById('flashcard-front').value = '';
+            document.getElementById('flashcard-back').value = '';
+            document.getElementById('flashcard-subject').value = '';
+
+            // Show the modal
+            document.getElementById('flashcard-modal').style.display = 'flex';
+        },
+
+        saveFlashcard: function () {
+            const front = document.getElementById('flashcard-front').value.trim();
+            const back = document.getElementById('flashcard-back').value.trim();
+            const subjectId = document.getElementById('flashcard-subject').value;
+
+            if (front && back) {
+                const flashcards = this.getFlashcards();
+                flashcards.push({
+                    front,
+                    back,
+                    id: Date.now(),
+                    subjectId: subjectId ? parseInt(subjectId) : null
+                });
+                localStorage.setItem('studymate-flashcards', JSON.stringify(flashcards));
+                this.closeModal('flashcard-modal');
+                this.loadFlashcardData();
+                this.showCurrentFlashcard();
+            } else {
+                alert('Please enter both the front and back of the flashcard.');
+            }
+        },
+
+        getFlashcards: function () {
+            return JSON.parse(localStorage.getItem('studymate-flashcards') || '[]');
+        },
+
+        loadFlashcardData: function () {
+            let flashcards = this.getFlashcards();
+            const subjects = this.getSubjects();
+
+            // Apply subject filter if set
+            if (this.currentSubjectFilter !== null) {
+                flashcards = flashcards.filter(card => card.subjectId === this.currentSubjectFilter);
+            }
+
+            const container = document.getElementById('flashcard-items');
+            if (container) {
+                if (flashcards.length === 0) {
+                    container.innerHTML = '<p class="empty-state">No flashcards found. Create your first flashcard!</p>';
+                    return;
+                }
+
+                // Group flashcards by subject
+                const flashcardsBySubject = {};
+                const noSubjectFlashcards = [];
+
+                flashcards.forEach(card => {
+                    if (card.subjectId) {
+                        if (!flashcardsBySubject[card.subjectId]) {
+                            flashcardsBySubject[card.subjectId] = [];
+                        }
+                        flashcardsBySubject[card.subjectId].push(card);
+                    } else {
+                        noSubjectFlashcards.push(card);
+                    }
+                });
+
+                let html = '';
+
+                // Add flashcards with subjects
+                Object.keys(flashcardsBySubject).forEach(subjectId => {
+                    const subject = subjects.find(s => s.id === parseInt(subjectId));
+                    if (subject) {
+                        html += `
+                                <div class="flashcard-by-subject">
+                                    <h3>
+                                        <span class="subject-tag-small" style="background-color: ${subject.color};">${subject.name}</span>
+                                    </h3>
+                                    <div class="flashcard-items-group">
+                                        ${flashcardsBySubject[subjectId].map(card => `
+                                            <div class="flashcard-item">
+                                                <strong>${card.front}</strong>
+                                                <button onclick="studyMate.deleteFlashcard(${card.id})">Delete</button>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                    }
+                });
+
+                // Add flashcards without subject
+                if (noSubjectFlashcards.length > 0) {
+                    html += `
+                            <div class="flashcard-by-subject">
+                                <h3>Uncategorized</h3>
+                                <div class="flashcard-items-group">
+                                    ${noSubjectFlashcards.map(card => `
+                                        <div class="flashcard-item">
+                                            <strong>${card.front}</strong>
+                                            <button onclick="studyMate.deleteFlashcard(${card.id})">Delete</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                }
+
+                container.innerHTML = html;
+            }
+        },
+
+        deleteFlashcard: function (id) {
+            const flashcards = this.getFlashcards().filter(card => card.id !== id);
+            localStorage.setItem('studymate-flashcards', JSON.stringify(flashcards));
+            this.loadFlashcardData();
+            this.showCurrentFlashcard();
+        },
+
+        flipCard: function () {
+            const flashcardInner = document.querySelector('.flashcard-inner');
+            if (flashcardInner) {
+                flashcardInner.classList.toggle('flipped');
+            }
+        },
+
+        nextCard: function () {
+            let flashcards = this.getFlashcards();
+
+            // Apply subject filter if set
+            if (this.currentSubjectFilter !== null) {
+                flashcards = flashcards.filter(card => card.subjectId === this.currentSubjectFilter);
+            }
+
+            if (flashcards.length === 0) return;
+
+            this.currentFlashcardIndex = (this.currentFlashcardIndex + 1) % flashcards.length;
+            this.showCurrentFlashcard();
+        },
+
+        prevCard: function () {
+            let flashcards = this.getFlashcards();
+
+            // Apply subject filter if set
+            if (this.currentSubjectFilter !== null) {
+                flashcards = flashcards.filter(card => card.subjectId === this.currentSubjectFilter);
+            }
+
+            if (flashcards.length === 0) return;
+
+            this.currentFlashcardIndex = (this.currentFlashcardIndex - 1 + flashcards.length) % flashcards.length;
+            this.showCurrentFlashcard();
+        },
+
+        showCurrentFlashcard: function () {
+            let flashcards = this.getFlashcards();
+
+            // Apply subject filter if set
+            if (this.currentSubjectFilter !== null) {
+                flashcards = flashcards.filter(card => card.subjectId === this.currentSubjectFilter);
+            }
+
+            if (flashcards.length === 0) return;
+
+            const card = flashcards[this.currentFlashcardIndex];
+            const flashcardEl = document.getElementById('current-flashcard');
+
+            if (flashcardEl) {
+                flashcardEl.innerHTML = `
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front">
+                                <h3>${card.front}</h3>
+                            </div>
+                            <div class="flashcard-back">
+                                <p>${card.back}</p>
+                            </div>
+                        </div>
+                    `;
+            }
+        },
+
+        // POMODORO TIMER VIEW
+        loadPomodoroTimer: function () {
+            this.currentView = 'pomodoro';
+            const dashboard = document.querySelector('.dashboard');
+            dashboard.innerHTML = `
+                    <div class="tool-header">
+                        <h1>⏰ Pomodoro Timer</h1>
+                    </div>
+                    
+                    <div class="pomodoro-container">
+                        <div class="timer-display">
+                            <div class="timer-circle">
+                                <span id="timer-text">25:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="timer-controls">
+                            <button class="btn-primary" onclick="studyMate.startTimer()">Start</button>
+                            <button class="btn-secondary" onclick="studyMate.pauseTimer()">Pause</button>
+                            <button class="btn-secondary" onclick="studyMate.resetTimer()">Reset</button>
+                        </div>
+                        
+                        <div class="timer-settings">
+                            <div class="setting-group">
+                                <label>Work Duration (minutes):</label>
+                                <input type="number" id="work-duration" value="25" min="1" max="60">
+                            </div>
+                            <div class="setting-group">
+                                <label>Break Duration (minutes):</label>
+                                <input type="number" id="break-duration" value="5" min="1" max="30">
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            // Initialize timer
+            this.timeLeft = 25 * 60;
+            this.isRunning = false;
+            if (this.timerInterval) {
+                clearInterval(this.timerInterval);
+            }
+        },
+
+        startTimer: function () {
+            if (!this.isRunning) {
+                this.isRunning = true;
+                this.timerInterval = setInterval(() => {
+                    this.timeLeft--;
+                    this.updateTimerDisplay();
+
+                    if (this.timeLeft <= 0) {
+                        this.timerComplete();
+                    }
+                }, 1000);
+            }
+        },
+
+        pauseTimer: function () {
+            this.isRunning = false;
+            clearInterval(this.timerInterval);
+        },
+
+        resetTimer: function () {
+            this.pauseTimer();
+            const workDuration = document.getElementById('work-duration').value;
+            this.timeLeft = workDuration * 60;
+            this.updateTimerDisplay();
+        },
+
+        updateTimerDisplay: function () {
+            const minutes = Math.floor(this.timeLeft / 60);
+            const seconds = this.timeLeft % 60;
+            const display = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            const timerText = document.getElementById('timer-text');
+            if (timerText) {
+                timerText.textContent = display;
+            }
+        },
+
+        timerComplete: function () {
+            this.pauseTimer();
+            alert('Time\'s up! Take a break.');
+        },
+
+        // QUIZ MAKER VIEW
+        loadQuizMaker: function () {
+            this.currentView = 'quiz';
+            const dashboard = document.querySelector('.dashboard');
+            dashboard.innerHTML = `
+                    <div class="tool-header">
+                        <h1>❓ Quiz Maker</h1>
+                        <div>
+                            <button class="btn-secondary" onclick="studyMate.createSubject()">New Subject</button>
+                            <button class="btn-primary" onclick="studyMate.createQuiz()">Create New Quiz</button>
+                        </div>
+                    </div>
+                    
+                    <div class="quiz-container">
+                        <div id="quiz-items"></div>
+                    </div>
+                `;
+
+            this.loadQuizData();
+        },
+
+        createQuiz: function () {
+            // Get subjects for dropdown
+            const subjects = this.getSubjects();
+            const subjectOptions = subjects.map(subject =>
+                `<option value="${subject.id}">${subject.name}</option>`
+            ).join('');
+
+            // Create quiz modal if it doesn't exist
+            if (!document.getElementById('quiz-modal')) {
+                const modalHTML = `
+                        <div id="quiz-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close-modal" onclick="studyMate.closeModal('quiz-modal')">&times;</span>
+                                <h2>Create New Quiz</h2>
+                                
+                                <div class="form-group">
+                                    <label for="quiz-subject">Subject:</label>
+                                    <select id="quiz-subject" class="input-field">
+                                        <option value="">-- Select Subject --</option>
+                                        ${subjectOptions}
+                                    </select>
+                                    <button class="btn-small" onclick="studyMate.createSubject()">+ New Subject</button>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="quiz-title">Quiz Title:</label>
+                                    <input type="text" id="quiz-title" class="input-field" placeholder="Enter quiz title">
+                                </div>
+                                
+                                <div id="quiz-questions-container">
+                                    <!-- Questions will be added here -->
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button class="btn-secondary" onclick="studyMate.addQuizQuestion()">Add Question</button>
+                                    <button class="btn-primary" onclick="studyMate.saveQuiz()">Save Quiz</button>
+                                    <button class="btn-secondary" onclick="studyMate.closeModal('quiz-modal')">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            } else {
+                // Update subject dropdown with latest subjects
+                const subjectSelect = document.getElementById('quiz-subject');
+                subjectSelect.innerHTML = `<option value="">-- Select Subject --</option>${subjectOptions}`;
+            }
+
+            // Clear previous values
+            document.getElementById('quiz-title').value = '';
+            document.getElementById('quiz-subject').value = '';
+            document.getElementById('quiz-questions-container').innerHTML = '';
+
+            // Add initial question
+            this.addQuizQuestion();
+
+            // Show the modal
+            document.getElementById('quiz-modal').style.display = 'flex';
+        },
+
+        addQuizQuestion: function () {
+            const container = document.getElementById('quiz-questions-container');
+            const questionId = Date.now();
+
+            const questionHTML = `
+                    <div class="question-item" data-id="${questionId}">
+                        <div class="form-group">
+                            <label>Question:</label>
+                            <input type="text" class="input-field question-text" placeholder="Enter your question">
+                        </div>
+                        <div class="form-group">
+                            <label>Answer:</label>
+                            <input type="text" class="input-field answer-text" placeholder="Enter the correct answer">
+                        </div>
+                        <button class="btn-secondary remove-btn" onclick="this.parentElement.remove()">Remove</button>
+                    </div>
+                `;
+
+            container.insertAdjacentHTML('beforeend', questionHTML);
+        },
+
+        saveQuiz: function () {
+            const title = document.getElementById('quiz-title').value.trim();
+            const subjectId = document.getElementById('quiz-subject').value;
+
+            if (!title) {
+                alert('Please enter a quiz title');
+                return;
+            }
+
+            const questionItems = document.querySelectorAll('.question-item');
+            const questions = [];
+
+            questionItems.forEach(item => {
+                const question = item.querySelector('.question-text').value.trim();
+                const answer = item.querySelector('.answer-text').value.trim();
+
+                if (question && answer) {
+                    questions.push({ question, answer });
+                }
+            });
+
+            if (questions.length === 0) {
+                alert('Please add at least one question with an answer');
+                return;
+            }
+
+            const quizzes = this.getQuizzes();
+            quizzes.push({
+                id: Date.now(),
+                title,
+                questions,
+                date: new Date().toLocaleDateString(),
+                subjectId: subjectId ? parseInt(subjectId) : null
+            });
+
+            localStorage.setItem('studymate-quizzes', JSON.stringify(quizzes));
+            this.closeModal('quiz-modal');
+            this.loadQuizData();
+        },
+
+        getQuizzes: function () {
+            return JSON.parse(localStorage.getItem('studymate-quizzes') || '[]');
+        },
+
+        loadQuizData: function () {
+            const quizzes = this.getQuizzes();
+            const subjects = this.getSubjects();
+            const container = document.getElementById('quiz-items');
+
+            if (container) {
+                if (quizzes.length === 0) {
+                    container.innerHTML = '<p class="empty-state">No quizzes found. Create your first quiz!</p>';
+                    return;
+                }
+
+                // Group quizzes by subject
+                const quizzesBySubject = {};
+                const noSubjectQuizzes = [];
+
+                quizzes.forEach(quiz => {
+                    if (quiz.subjectId) {
+                        if (!quizzesBySubject[quiz.subjectId]) {
+                            quizzesBySubject[quiz.subjectId] = [];
+                        }
+                        quizzesBySubject[quiz.subjectId].push(quiz);
+                    } else {
+                        noSubjectQuizzes.push(quiz);
+                    }
+                });
+
+                let html = '';
+
+                // Add quizzes with subjects
+                Object.keys(quizzesBySubject).forEach(subjectId => {
+                    const subject = subjects.find(s => s.id === parseInt(subjectId));
+                    if (subject) {
+                        html += `
+                                <div class="quiz-by-subject">
+                                    <h3>
+                                        <span class="subject-tag-small" style="background-color: ${subject.color};">${subject.name}</span>
+                                    </h3>
+                                    <div class="quiz-items-group">
+                                        ${quizzesBySubject[subjectId].map(quiz => `
+                                            <div class="quiz-item">
+                                                <h4>${quiz.title}</h4>
+                                                <p>${quiz.questions.length} questions</p>
+                                                <small>${quiz.date}</small>
+                                                <div class="quiz-actions">
+                                                    <button class="btn-primary" onclick="studyMate.takeQuiz(${quiz.id})">Take Quiz</button>
+                                                    <button class="btn-secondary" onclick="studyMate.deleteQuiz(${quiz.id})">Delete</button>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                            `;
+                    }
+                });
+
+                // Add quizzes without subject
+                if (noSubjectQuizzes.length > 0) {
+                    html += `
+                            <div class="quiz-by-subject">
+                                <h3>Uncategorized</h3>
+                                <div class="quiz-items-group">
+                                    ${noSubjectQuizzes.map(quiz => `
+                                        <div class="quiz-item">
+                                            <h4>${quiz.title}</h4>
+                                            <p>${quiz.questions.length} questions</p>
+                                            <small>${quiz.date}</small>
+                                            <div class="quiz-actions">
+                                                <button class="btn-primary" onclick="studyMate.takeQuiz(${quiz.id})">Take Quiz</button>
+                                                <button class="btn-secondary" onclick="studyMate.deleteQuiz(${quiz.id})">Delete</button>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                }
+
+                container.innerHTML = html;
+            }
+        },
+
+        takeQuiz: function (id) {
+            const quizzes = this.getQuizzes();
+            const quiz = quizzes.find(q => q.id === id);
+
+            if (quiz) {
+                // Create quiz taking modal
+                const modalHTML = `
+                        <div id="take-quiz-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close-modal" onclick="studyMate.closeModal('take-quiz-modal')">&times;</span>
+                                <h2>${quiz.title}</h2>
+                                <div id="quiz-progress">Question 1 of ${quiz.questions.length}</div>
+                                
+                                <div class="quiz-question-container">
+                                    <h3 id="current-question">${quiz.questions[0].question}</h3>
+                                    <input type="text" id="quiz-answer" class="input-field" placeholder="Your answer">
+                                </div>
+                                
+                                <div class="modal-actions">
+                                    <button class="btn-primary" onclick="studyMate.submitQuizAnswer()">Submit Answer</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                // Add modal to the body
+                if (document.getElementById('take-quiz-modal')) {
+                    document.getElementById('take-quiz-modal').remove();
+                }
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+                // Initialize quiz state
+                this.currentQuiz = quiz;
+                this.currentQuestionIndex = 0;
+                this.quizScore = 0;
+
+                // Show the modal
+                document.getElementById('take-quiz-modal').style.display = 'flex';
+                document.getElementById('quiz-answer').focus();
+            }
+        },
+
+        submitQuizAnswer: function () {
+            const quiz = this.currentQuiz;
+            if (!quiz) return;
+
+            const currentQuestion = quiz.questions[this.currentQuestionIndex];
+            const userAnswer = document.getElementById('quiz-answer').value.trim();
+
+            // Check answer
+            if (userAnswer && userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
+                this.quizScore++;
+            }
+
+            // Move to next question or show results
+            this.currentQuestionIndex++;
+
+            if (this.currentQuestionIndex < quiz.questions.length) {
+                // Show next question
+                document.getElementById('current-question').textContent = quiz.questions[this.currentQuestionIndex].question;
+                document.getElementById('quiz-progress').textContent = `Question ${this.currentQuestionIndex + 1} of ${quiz.questions.length}`;
+                document.getElementById('quiz-answer').value = '';
+                document.getElementById('quiz-answer').focus();
+            } else {
+                // Show results
+                const percentage = Math.round((this.quizScore / quiz.questions.length) * 100);
+                document.getElementById('take-quiz-modal').innerHTML = `
+                        <div class="modal-content">
+                            <span class="close-modal" onclick="studyMate.closeModal('take-quiz-modal')">&times;</span>
+                            <h2>Quiz Results</h2>
+                            <div class="quiz-results">
+                                <h3>You scored: ${this.quizScore} out of ${quiz.questions.length}</h3>
+                                <div class="score-percentage">${percentage}%</div>
+                                <p>${this.getScoreMessage(percentage)}</p>
+                            </div>
+                            <div class="modal-actions">
+                                <button class="btn-primary" onclick="studyMate.closeModal('take-quiz-modal')">Close</button>
+                            </div>
+                        </div>
+                    `;
+            }
+        },
+
+        getScoreMessage: function (percentage) {
+            if (percentage >= 90) return "Excellent! You've mastered this material!";
+            if (percentage >= 75) return "Great job! You know this material well.";
+            if (percentage >= 60) return "Good work! Keep practicing to improve.";
+            if (percentage >= 40) return "You're making progress. Keep studying!";
+            return "Keep practicing! You'll improve with more study time.";
+        },
+
+        deleteQuiz: function (id) {
+            if (confirm('Are you sure you want to delete this quiz?')) {
+                const quizzes = this.getQuizzes().filter(q => q.id !== id);
+                localStorage.setItem('studymate-quizzes', JSON.stringify(quizzes));
+                this.loadQuizData();
+            }
+        },
+
+        // NOTES VIEW
+        loadNotes: function () {
+            this.currentView = 'notes';
+            const dashboard = document.querySelector('.dashboard');
+            dashboard.innerHTML = `
+                    <div class="tool-header">
+                        <h1>📝 Notes</h1>
+                        <button class="btn-primary" onclick="studyMate.createNote()">Create New Note</button>
+                    </div>
+                    
+                    <div class="notes-container">
+                        <div class="notes-sidebar">
+                            <h3>Your Notes</h3>
+                            <div id="notes-list"></div>
+                        </div>
+                        
+                        <div class="notes-editor">
+                            <input type="text" id="note-title" placeholder="Note Title" class="input-field">
+                            <textarea id="note-content" placeholder="Start writing your note..." class="textarea-field"></textarea>
+                            <div class="notes-actions">
+                                <button class="btn-primary" onclick="studyMate.saveNote()">Save Note</button>
+                                <button class="btn-secondary" onclick="studyMate.deleteNote()">Delete Note</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            this.loadNotesData();
+        },
+
+        createNote: function () {
+            document.getElementById('note-title').value = '';
+            document.getElementById('note-content').value = '';
+            this.currentNoteId = null;
+        },
+
+        getNotes: function () {
+            return JSON.parse(localStorage.getItem('studymate-notes') || '[]');
+        },
+
+        loadNotesData: function () {
+            const notes = this.getNotes();
+            const container = document.getElementById('notes-list');
+            if (container) {
+                if (notes.length === 0) {
+                    container.innerHTML = '<p class="empty-state">No notes found. Create your first note!</p>';
+                    return;
+                }
+
+                container.innerHTML = notes.map(note => `
+                        <div class="note-item" onclick="studyMate.loadNote(${note.id})">
+                            <h4>${note.title}</h4>
+                            <small>${note.date}</small>
+                        </div>
+                    `).join('');
+            }
+        },
+
+        loadNote: function (id) {
+            const notes = this.getNotes();
+            const note = notes.find(n => n.id === id);
+            if (note) {
+                document.getElementById('note-title').value = note.title;
+                document.getElementById('note-content').value = note.content;
+                this.currentNoteId = id;
+            }
+        },
+
+        saveNote: function () {
+            const title = document.getElementById('note-title').value.trim();
+            const content = document.getElementById('note-content').value.trim();
+
+            if (title && content) {
+                const notes = this.getNotes();
+                const note = {
+                    id: this.currentNoteId || Date.now(),
+                    title,
+                    content,
+                    date: new Date().toLocaleDateString()
+                };
+
+                if (this.currentNoteId) {
+                    const index = notes.findIndex(n => n.id === this.currentNoteId);
+                    notes[index] = note;
+                } else {
+                    notes.push(note);
+                }
+
+                localStorage.setItem('studymate-notes', JSON.stringify(notes));
+                this.loadNotesData();
+                alert('Note saved successfully!');
+            } else {
+                alert('Please enter both title and content for your note.');
+            }
+        },
+
+        deleteNote: function () {
+            if (this.currentNoteId && confirm('Are you sure you want to delete this note?')) {
+                const notes = this.getNotes().filter(n => n.id !== this.currentNoteId);
+                localStorage.setItem('studymate-notes', JSON.stringify(notes));
+                this.createNote();
+                this.loadNotesData();
+            }
+        },
+
+        // SUBJECT MANAGEMENT
+        getSubjects: function () {
+            return JSON.parse(localStorage.getItem('studymate-subjects') || '[]');
+        },
+
+        createSubject: function () {
+            // Create subject modal
+            const modalHTML = `
+                    <div id="subject-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal" onclick="studyMate.closeModal('subject-modal')">&times;</span>
+                            <h2>Create New Subject</h2>
+                            
+                            <div class="form-group">
+                                <label for="subject-name">Subject Name:</label>
+                                <input type="text" id="subject-name" class="input-field" placeholder="e.g., Biology, Mathematics, History">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Subject Color:</label>
+                                <div class="color-picker">
+                                    <div class="color-option" data-color="#4285F4" style="background-color: #4285F4;"></div>
+                                    <div class="color-option" data-color="#EA4335" style="background-color: #EA4335;"></div>
+                                    <div class="color-option" data-color="#34A853" style="background-color: #34A853;"></div>
+                                    <div class="color-option" data-color="#FBBC05" style="background-color: #FBBC05;"></div>
+                                    <div class="color-option" data-color="#FF6D01" style="background-color: #FF6D01;"></div>
+                                    <div class="color-option" data-color="#46BDC6" style="background-color: #46BDC6;"></div>
+                                    <div class="color-option" data-color="#7B1FA2" style="background-color: #7B1FA2;"></div>
+                                    <div class="color-option" data-color="#C2185B" style="background-color: #C2185B;"></div>
+                                </div>
+                                <input type="hidden" id="subject-color" value="#4285F4">
+                            </div>
+                            
+                            <div class="modal-actions">
+                                <button class="btn-primary" onclick="studyMate.saveSubject()">Create Subject</button>
+                                <button class="btn-secondary" onclick="studyMate.closeModal('subject-modal')">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            // Add modal to the body
+            if (!document.getElementById('subject-modal')) {
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            }
+
+            // Show the modal
+            document.getElementById('subject-modal').style.display = 'flex';
+
+            // Add event listeners to color options
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                    document.getElementById('subject-color').value = e.target.dataset.color;
+                });
+            });
+
+            // Select first color by default
+            document.querySelector('.color-option').classList.add('selected');
+        },
+
+        saveSubject: function () {
+            const name = document.getElementById('subject-name').value.trim();
+            const color = document.getElementById('subject-color').value;
+
+            if (!name) {
+                alert('Please enter a subject name');
+                return;
+            }
+
+            const subjects = this.getSubjects();
+            const newSubject = {
+                id: Date.now(),
+                name: name,
+                color: color
+            };
+
+            subjects.push(newSubject);
+            localStorage.setItem('studymate-subjects', JSON.stringify(subjects));
+            this.closeModal('subject-modal');
+
+            // Reload current view to show the new subject
+            if (this.currentView === 'flashcards') {
+                this.loadFlashcards();
+            } else if (this.currentView === 'quiz') {
+                this.loadQuizMaker();
+            }
+
+            return newSubject;
+        },
+
+        // SETTINGS AND DATA MANAGEMENT
+        showSettings: function () {
+            // Create settings modal
+            const modalHTML = `
+                    <div id="settings-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal" onclick="studyMate.closeModal('settings-modal')">&times;</span>
+                            <h2>Settings</h2>
+                            
+                            <div class="settings-section">
+                                <h3>Data Management</h3>
+                                <p>Save your study data for future use or restore from a backup.</p>
+                                <div class="settings-actions">
+                                    <button class="btn-primary" onclick="studyMate.exportData()">Export Data</button>
+                                    <button class="btn-secondary" onclick="studyMate.importData()">Import Data</button>
+                                    <button class="btn-secondary" onclick="studyMate.clearAllData()">Clear All Data</button>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-section">
+                                <h3>Preferences</h3>
+                                <div class="form-group">
+                                    <label for="default-pomodoro">Default Pomodoro Time (minutes):</label>
+                                    <input type="number" id="default-pomodoro" class="input-field" value="25" min="1" max="60">
+                                </div>
+                                <div class="form-group">
+                                    <label for="default-break">Default Break Time (minutes):</label>
+                                    <input type="number" id="default-break" class="input-field" value="5" min="1" max="30">
+                                </div>
+                                <button class="btn-primary" onclick="studyMate.saveSettings()">Save Preferences</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+            // Add modal to the body if it doesn't exist
+            if (!document.getElementById('settings-modal')) {
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+            }
+
+            // Load current settings
+            const settings = JSON.parse(localStorage.getItem('studymate-settings') || '{}');
+            if (settings.pomodoroWorkTime) {
+                document.getElementById('default-pomodoro').value = settings.pomodoroWorkTime;
+            }
+            if (settings.pomodoroBreakTime) {
+                document.getElementById('default-break').value = settings.pomodoroBreakTime;
+            }
+
+            // Show the modal
+            document.getElementById('settings-modal').style.display = 'flex';
+        },
+
+        saveSettings: function () {
+            const settings = {
+                pomodoroWorkTime: parseInt(document.getElementById('default-pomodoro').value) || 25,
+                pomodoroBreakTime: parseInt(document.getElementById('default-break').value) || 5,
+                lastUpdated: new Date().toISOString()
+            };
+
+            localStorage.setItem('studymate-settings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+            this.closeModal('settings-modal');
+        },
+
+        exportData: function () {
+            // Collect all data from localStorage
+            const data = {
+                flashcards: this.getFlashcards(),
+                notes: this.getNotes(),
+                quizzes: this.getQuizzes(),
+                subjects: this.getSubjects(),
+                settings: JSON.parse(localStorage.getItem('studymate-settings') || '{}'),
+                exportDate: new Date().toISOString()
+            };
+
+            // Convert to JSON string
+            const jsonData = JSON.stringify(data, null, 2); // Pretty print with 2 spaces
+
+            // Create a download link
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'studymate-backup-' + new Date().toISOString().split('T')[0] + '.json';
+            document.body.appendChild(a);
+            a.click();
+
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 0);
+
+            alert('Data exported successfully! Your backup file has been downloaded.');
+            this.closeModal('settings-modal');
+        },
+
+        importData: function () {
+            // Create file input element
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = event => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+
+                        // Validate data structure
+                        if (!data.flashcards || !data.notes || !data.quizzes) {
+                            throw new Error('Invalid backup file format');
+                        }
+
+                        // Import data
+                        localStorage.setItem('studymate-flashcards', JSON.stringify(data.flashcards));
+                        localStorage.setItem('studymate-notes', JSON.stringify(data.notes));
+                        localStorage.setItem('studymate-quizzes', JSON.stringify(data.quizzes));
+
+                        if (data.subjects) {
+                            localStorage.setItem('studymate-subjects', JSON.stringify(data.subjects));
+                        }
+
+                        if (data.settings) {
+                            localStorage.setItem('studymate-settings', JSON.stringify(data.settings));
+                        }
+
+                        alert('Data imported successfully! Refreshing page to apply changes...');
+                        location.reload();
+                    } catch (error) {
+                        alert('Error importing data: ' + error.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+
+            input.click();
+        },
+
+        clearAllData: function () {
+            if (confirm('Are you sure you want to clear all your StudyMate data? This cannot be undone!')) {
+                localStorage.removeItem('studymate-flashcards');
+                localStorage.removeItem('studymate-notes');
+                localStorage.removeItem('studymate-quizzes');
+                localStorage.removeItem('studymate-subjects');
+                localStorage.removeItem('studymate-settings');
+                localStorage.removeItem('studymate-initialized');
+
+                alert('All data has been cleared. Refreshing page...');
+                location.reload();
+            }
+        },
+
+        // UTILITY FUNCTIONS
+        closeModal: function (modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+    };
+
+    // Initialize the application when the page loads
+    document.addEventListener('DOMContentLoaded', () => {
+        studyMate.init();
+    });
+</script>
+</body>
+
+</html>
